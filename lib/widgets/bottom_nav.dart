@@ -1,43 +1,34 @@
+import 'package:edencrew_assignment_starter/widgets/bottom_nav_item.dart';
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({super.key});
+  const BottomNav({super.key, required this.currentIndex, required this.onTap});
+
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  static const _items = [
+    (icon: Icons.star, label: '관심'),
+    (icon: Icons.search, label: '검색'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-    final dimens = context.dimens;
-
     return Container(
-      height: dimens.tabBarHeight,
-      color: colors.surfaceBase,
+      height: context.dimens.tabBarHeight,
+      color: context.colors.surfaceBase,
       child: Row(
         children: [
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star, color: colors.navActive),
-                Text(
-                  '관심',
-                  style: TextStyle(color: colors.navActive, fontSize: 11),
-                ),
-              ],
+          for (var i = 0; i < _items.length; i++)
+            Expanded(
+              child: BottomNavItem(
+                icon: _items[i].icon,
+                label: _items[i].label,
+                selected: currentIndex == i,
+                onTap: () => onTap(i),
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.search, color: colors.navInactive),
-                Text(
-                  '검색',
-                  style: TextStyle(color: colors.navInactive, fontSize: 11),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
