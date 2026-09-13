@@ -29,6 +29,17 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   late Future<List<WatchlistItem>> _future;
 
+  // TODO: 정렬 바텀시트(WatchlistSortSheet) 연결 시 실제 옵션 전환 로직으로 교체.
+  WatchlistSortOption _sortOption = WatchlistSortOption.nameAsc;
+
+  void _onSortTap() {
+    // TODO: WatchlistSortSheet.show(context, selected: _sortOption) 연결.
+  }
+
+  void _onRefreshTap() {
+    // TODO: 시세 재조회 로직 연결 (NAVER_API.md 실시간 시세 endpoint 참고).
+  }
+
   @override
   void initState() {
     super.initState();
@@ -85,7 +96,11 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const WatchlistHeader(),
+            WatchlistHeader(
+              sortLabel: _sortOption.label,
+              onSortTap: _onSortTap,
+              onRefreshTap: _onRefreshTap,
+            ),
             Expanded(
               child: FutureBuilder<List<WatchlistItem>>(
                 future: _future,
