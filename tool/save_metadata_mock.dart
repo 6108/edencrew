@@ -4,26 +4,35 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 Future<void> main() async {
-  const symbol = '005930';
+  const symbols = [
+    '005930', // 삼성전자
+    '000660', // SK하이닉스
+    '005380', // 현대차
+    '035420', // NAVER
+    '035720', // 카카오
+  ];
 
-  final uri = Uri.https(
-    'stock.naver.com',
-    '/api/securityFe/api/fchart/domestic/stock/$symbol',
-  );
+  for (final symbol in symbols) {
+    final uri = Uri.https(
+      'stock.naver.com',
+      '/api/securityFe/api/fchart/domestic/stock/$symbol',
+    );
 
-  print('네이버 종목 메타데이터 API 요청 중...');
+    print('$symbol 메타데이터 API 요청 중...');
 
-  final response = await http.get(uri);
+    final response = await http.get(uri);
 
-  if (response.statusCode != 200) {
-    print('API 요청 실패: ${response.statusCode}');
-    return;
+    if (response.statusCode != 200) {
+      print('$symbol API 요청 실패: ${response.statusCode}');
+      continue;
+    }
+
+    final file = File('assets/mock/metadata_$symbol.json');
+
+    await file.writeAsString(response.body);
+
+    print('$symbol Mock 저장 완료!');
   }
 
-  final file = File('assets/mock/metadata_$symbol.json');
-
-  await file.writeAsString(response.body);
-
-  print('Mock 저장 완료!');
-  print(file.path);
+  print('모든 메타데이터 Mock 저장 완료!');
 }

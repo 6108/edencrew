@@ -8,7 +8,13 @@ import 'package:edencrew_assignment_starter/widgets/watchlist_row.dart';
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 
-const List<String> _watchedSymbols = ['005930'];
+const List<String> _watchedSymbols = [
+  '005930', // 삼성전자
+  '000660', // SK하이닉스
+  '005380', // 현대차
+  '035420', // NAVER
+  '035720', // 카카오
+];
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
