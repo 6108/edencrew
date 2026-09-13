@@ -15,7 +15,9 @@ class StockRepository {
         .where(
           (item) =>
               item.nationCode == 'KOR' &&
-              RegExp(r'^\d{6}$').hasMatch(item.code),
+              RegExp(r'^\d{6}$').hasMatch(item.code) &&
+              (item.name.toLowerCase().contains(query.toLowerCase()) ||
+                  item.code.contains(query)),
         )
         .map(
           (item) => Stock(
