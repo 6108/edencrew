@@ -1,5 +1,5 @@
-import 'package:edencrew_assignment_starter/model/daily_price.dart';
-import 'package:edencrew_assignment_starter/model/stock.dart';
+import 'package:edencrew_assignment_starter/models/daily_price.dart';
+import 'package:edencrew_assignment_starter/models/stock.dart';
 
 import '../datasource/stock_data_source.dart';
 
