@@ -5,6 +5,7 @@ import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_empty.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_header.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_row.dart';
+import 'package:edencrew_assignment_starter/widgets/watchlist_sort_sheet.dart';
 import 'package:flutter/material.dart';
 import '../theme/theme.dart';
 
@@ -29,11 +30,16 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   late Future<List<WatchlistItem>> _future;
 
-  // TODO: 정렬 바텀시트(WatchlistSortSheet) 연결 시 실제 옵션 전환 로직으로 교체.
   WatchlistSortOption _sortOption = WatchlistSortOption.nameAsc;
 
-  void _onSortTap() {
-    // TODO: WatchlistSortSheet.show(context, selected: _sortOption) 연결.
+  Future<void> _onSortTap() async {
+    final selected = await WatchlistSortSheet.show(
+      context,
+      selected: _sortOption,
+    );
+    if (selected != null && selected != _sortOption) {
+      setState(() => _sortOption = selected);
+    }
   }
 
   void _onRefreshTap() {
@@ -87,6 +93,27 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     return PriceDirection.flat;
   }
 
+  // 시세를 아직 못 받은 행(스켈레톤)은 정렬 기준과 무관하게 항상 맨 뒤에 두도록 처리합니다.
+  List<WatchlistItem> _sorted(List<WatchlistItem> items) {
+    final sorted = List.of(items);
+    sorted.sort((a, b) {
+      if (a.isLoading != b.isLoading) {
+        return a.isLoading ? 1 : -1;
+      }
+      switch (_sortOption) {
+        case WatchlistSortOption.priceDesc:
+          return (b.price ?? 0).compareTo(a.price ?? 0);
+        case WatchlistSortOption.changeRateDesc:
+          return (b.changeRatePercent ?? 0.0).compareTo(
+            a.changeRatePercent ?? 0.0,
+          );
+        case WatchlistSortOption.nameAsc:
+          return a.name.compareTo(b.name);
+      }
+    });
+    return sorted;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -120,7 +147,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final items = snapshot.data!;
+                  final items = _sorted(snapshot.data!);
 
                   if (items.isEmpty) {
                     return const WatchlistEmpty();
