@@ -36,9 +36,9 @@ class WatchlistSortSheet extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 1, 0, 34),
       decoration: BoxDecoration(
         color: colors.surfaceOverlay,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(dimens.radiusXl),
+          topRight: Radius.circular(dimens.radiusXl),
         ),
       ),
       child: Column(
