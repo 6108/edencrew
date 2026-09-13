@@ -34,23 +34,24 @@ class StockRepository {
         .toList();
   }
 
-  Future<List<Stock>> getRealtimeStocks(List<String> symbols) async {
+  Future<Map<String, Stock>> getRealtimeStocks(List<String> symbols) async {
     final response = await dataSource.getRealtimeStocks(symbols);
 
-    return response.stocks.map((item) {
-      return Stock(
-        symbol: item.cd,
-        name: '',
-        market: '',
-        currentPrice: item.nv,
-        previousClose: item.pcv,
-        openPrice: item.ov,
-        highPrice: item.hv,
-        lowPrice: item.lv,
-        tradingVolume: item.aq,
-        listedStockCount: item.countOfListedStock,
-      );
-    }).toList();
+    return {
+      for (final item in response.stocks)
+        item.cd: Stock(
+          symbol: item.cd,
+          name: '',
+          market: '',
+          currentPrice: item.nv,
+          previousClose: item.pcv,
+          openPrice: item.ov,
+          highPrice: item.hv,
+          lowPrice: item.lv,
+          tradingVolume: item.aq,
+          listedStockCount: item.countOfListedStock,
+        ),
+    };
   }
 
   Future<Stock> getStockMetadata(String symbol) async {
