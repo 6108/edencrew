@@ -26,7 +26,7 @@ class BottomNavItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: color),
-          Text(label, style: TextStyle(color: color, fontSize: 11)),
+          Text(label, style: context.textStyles.caption.copyWith(color: color)),
         ],
       ),
     );

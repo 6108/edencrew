@@ -8,6 +8,7 @@ class WatchlistHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final dimens = context.dimens;
+    final textStyles = context.textStyles;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -18,16 +19,12 @@ class WatchlistHeader extends StatelessWidget {
         children: [
           Text(
             '관심',
-            style: TextStyle(
-              color: colors.textPrimary,
-              fontSize: 20,
-              fontWeight: AppTypography.bold,
-            ),
+            style: textStyles.title.copyWith(color: colors.textPrimary),
           ),
           const Spacer(),
           Text(
             '가나다순',
-            style: TextStyle(color: colors.textSecondary, fontSize: 13),
+            style: textStyles.label.copyWith(color: colors.textSecondary),
           ),
           Icon(
             Icons.expand_more,
