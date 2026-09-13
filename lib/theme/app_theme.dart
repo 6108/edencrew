@@ -4,6 +4,7 @@ import 'app_colors.dart';
 import 'app_dimens.dart';
 import 'app_palette.dart';
 import 'app_typography.dart';
+import 'app_text_styles.dart';
 
 /// 앱 전역 테마입니다.
 ///
@@ -52,4 +53,8 @@ extension AppThemeContext on BuildContext {
 
   AppDimens get dimens =>
       Theme.of(this).extension<AppDimens>() ?? const AppDimens.standard();
+
+  AppTextStyles get textStyles =>
+      Theme.of(this).extension<AppTextStyles>() ??
+      const AppTextStyles.standard();
 }
