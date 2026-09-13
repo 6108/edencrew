@@ -6,9 +6,14 @@ import 'package:edencrew_assignment_starter/models/stock.dart';
 import '../theme/theme.dart';
 import '../widgets/search_empty.dart';
 import '../widgets/search_field.dart';
+import '../widgets/search_no_results.dart';
 import '../widgets/search_result_row.dart';
 
-/// 검색 화면
+/// 검색 화면. (`02 · 검색` / `02 · 검색_empty` / `02 · 검색결과_empty`)
+///
+/// 결과 없음 상태(`SearchNoResults`)와 관심 등록/해제 토스트, 관심 화면과의
+/// 상태 동기화는 다음 단계에서 붙입니다. 지금 관심 등록 여부는 이 화면
+/// 로컬 `Set`으로만 관리해서, 관심 화면에는 아직 반영되지 않습니다.
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -108,8 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
         final results = snapshot.data ?? const <Stock>[];
 
         if (results.isEmpty) {
-          // TODO: SearchNoResults(query: _query)로 교체 (`02 · 검색결과_empty`).
-          return const SizedBox.shrink();
+          return SearchNoResults(query: _query);
         }
 
         return ListView.builder(
