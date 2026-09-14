@@ -1,4 +1,5 @@
 import 'package:edencrew_assignment_starter/models/daily_price.dart';
+import 'package:edencrew_assignment_starter/models/daily_price_page.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 
 import '../datasource/stock_data_source.dart';
@@ -73,10 +74,10 @@ class StockRepository {
     );
   }
 
-  Future<List<DailyPrice>> getDailyPrices(String symbol, int page) async {
+  Future<DailyPricePage> getDailyPrices(String symbol, int page) async {
     final response = await dataSource.getDailyPrices(symbol, page);
 
-    return response.prices.map((item) {
+    final prices = response.prices.map((item) {
       return DailyPrice(
         date: item.localDate,
         closePrice: item.closePrice,
@@ -86,5 +87,7 @@ class StockRepository {
         tradingVolume: item.accumulatedTradingVolume,
       );
     }).toList();
+
+    return DailyPricePage(prices: prices, lastPage: response.lastPage);
   }
 }

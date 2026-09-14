@@ -28,30 +28,29 @@ class PriceSummary extends StatelessWidget {
         : changeAmount < 0
         ? colors.priceDownText
         : colors.priceFlatText;
+
     final arrow = changeAmount > 0 ? '▲' : (changeAmount < 0 ? '▼' : '-');
     final rateSign = changeRatePercent > 0 ? '+' : '';
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: dimens.space4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        children: [
-          Text(
-            formatThousands(price),
-            style: textStyles.displayPrice.copyWith(color: colors.textPrimary),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          formatThousands(price),
+          style: textStyles.displayPrice.copyWith(color: colors.textPrimary),
+        ),
+        SizedBox(width: dimens.space2),
+        Text(
+          '$arrow ${formatThousands(changeAmount.abs())} '
+          '($rateSign${changeRatePercent.toStringAsFixed(2)}%)',
+          style: TextStyle(
+            color: color,
+            fontSize: 15,
+            fontWeight: AppTypography.regular,
           ),
-          SizedBox(width: dimens.space2),
-          Text(
-            '$arrow ${formatThousands(changeAmount.abs())} ($rateSign${changeRatePercent.toStringAsFixed(2)}%)',
-            style: TextStyle(
-              color: color,
-              fontSize: 15,
-              fontWeight: AppTypography.regular,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
