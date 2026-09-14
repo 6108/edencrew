@@ -1,11 +1,15 @@
+import 'package:edencrew_assignment_starter/widgets/detail/daily_quote.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/chart_period.dart';
+import 'package:edencrew_assignment_starter/models/daily_price.dart';
+import 'package:edencrew_assignment_starter/models/daily_quote_item.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import 'package:edencrew_assignment_starter/utils/number_format.dart';
+
 import '../providers/watchlist_provider.dart';
 import '../theme/theme.dart';
 import '../widgets/detail/detail_header.dart';
@@ -15,7 +19,7 @@ import '../widgets/detail/quote_summary.dart';
 
 /// 종목상세 화면. (`03 · 종목상세`)
 ///
-/// 헤더, 현재가/등락, 기간 탭, 시세 요약을 보여줍니다.
+/// 헤더, 현재가/등락, 기간 탭, 시세 요약, 일별 시세를 보여줍니다.
 class StockDetailScreen extends StatefulWidget {
   const StockDetailScreen({super.key, required this.symbol});
 
@@ -29,6 +33,7 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
   final _repository = StockRepository(MockNaverApi());
 
   late final Future<Stock> _future = _loadStock();
+  late final Future<List<DailyQuoteRowItem>> _dailyQuotes = _loadDailyQuotes();
 
   ChartPeriod _period = ChartPeriod.oneMonth;
 
@@ -55,6 +60,42 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
       tradingVolume: realtime.tradingVolume,
       listedStockCount: realtime.listedStockCount,
     );
+  }
+
+  Future<List<DailyQuoteRowItem>> _loadDailyQuotes() async {
+    final prices = await _repository.getDailyPrices(widget.symbol, 1);
+
+    return [
+      for (var i = 0; i < prices.length; i++)
+        DailyQuoteRowItem(
+          dateLabel: _formatDate(prices[i].date),
+          close: prices[i].closePrice,
+          changeAmount: _getChangeAmount(prices, i),
+          volume: prices[i].tradingVolume,
+        ),
+    ];
+  }
+
+  int _getChangeAmount(List<DailyPrice> prices, int index) {
+    if (index >= prices.length - 1) return 0;
+
+    return prices[index].closePrice - prices[index + 1].closePrice;
+  }
+
+  String _formatDate(String date) {
+    if (date.contains('-')) {
+      final parts = date.split('-');
+
+      if (parts.length >= 3) {
+        return '${parts[1]}.${parts[2]}';
+      }
+    }
+
+    if (date.length >= 8) {
+      return '${date.substring(4, 6)}.${date.substring(6, 8)}';
+    }
+
+    return date;
   }
 
   @override
@@ -97,20 +138,17 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
                     watchlistProvider.toggle(stock.symbol);
                   },
                 ),
-
                 PriceSummary(
                   price: stock.currentPrice,
                   changeAmount: stock.changeAmount,
                   changeRatePercent: stock.changeRate * 100,
                 ),
-
                 PeriodTabBar(
                   selected: _period,
                   onSelected: (period) {
                     setState(() => _period = period);
                   },
                 ),
-
                 QuoteSummary(
                   rows: [
                     [
@@ -130,9 +168,31 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
                     ],
                   ],
                 ),
+                FutureBuilder<List<DailyQuoteRowItem>>(
+                  future: _dailyQuotes,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Padding(
+                        padding: EdgeInsets.all(context.dimens.space4),
+                        child: Text(
+                          '일별 시세를 불러오지 못했습니다.',
+                          style: context.textStyles.caption.copyWith(
+                            color: colors.textTertiary,
+                          ),
+                        ),
+                      );
+                    }
 
-                // TODO: CandleChart
-                // TODO: DailyQuoteTable
+                    if (!snapshot.hasData) {
+                      return const Padding(
+                        padding: EdgeInsets.all(24),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    return DailyQuote(rows: snapshot.data!);
+                  },
+                ),
               ],
             );
           },
