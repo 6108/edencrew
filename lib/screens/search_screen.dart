@@ -1,3 +1,4 @@
+import 'package:edencrew_assignment_starter/screens/stock_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -138,7 +139,11 @@ class _SearchScreenState extends State<SearchScreen> {
               query: _query,
               isFavorite: watchlistProvider.isFavorite(stock.symbol),
               onTap: () {
-                // TODO: 종목 상세 화면 이동 (StockDetailScreen으로 Navigator.push)
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => StockDetailScreen(symbol: stock.symbol),
+                  ),
+                );
               },
               onFavoriteTap: () => _onFavoriteTap(stock),
             );
