@@ -5,12 +5,13 @@ class StockSearchResponseDto {
   StockSearchResponseDto({required this.query, required this.items});
 
   factory StockSearchResponseDto.fromJson(Map<String, dynamic> json) {
+    final rawItems = json['items'] as List?;
+
     return StockSearchResponseDto(
-      query: json['query'] as String,
-      items: (json['items'] as List)
-          .map(
-            (item) => StockSearchItemDto.fromJson(item as Map<String, dynamic>),
-          )
+      query: json['query'] as String? ?? '',
+      items: (rawItems ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(StockSearchItemDto.fromJson)
           .toList(),
     );
   }
@@ -37,13 +38,13 @@ class StockSearchItemDto {
 
   factory StockSearchItemDto.fromJson(Map<String, dynamic> json) {
     return StockSearchItemDto(
-      code: json['code'] as String,
-      name: json['name'] as String,
-      typeCode: json['typeCode'] as String,
-      typeName: json['typeName'] as String,
-      url: json['url'] as String,
-      nationCode: json['nationCode'] as String,
-      category: json['category'] as String,
+      code: json['code'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      typeCode: json['typeCode'] as String? ?? '',
+      typeName: json['typeName'] as String? ?? '',
+      url: json['url'] as String? ?? '',
+      nationCode: json['nationCode'] as String? ?? '',
+      category: json['category'] as String? ?? '',
     );
   }
 }

@@ -39,10 +39,30 @@ class _SearchScreenState extends State<SearchScreen> {
     final trimmed = value.trim();
     setState(() {
       _query = trimmed;
-      _resultsFuture = trimmed.isEmpty
-          ? null
-          : _repository.searchStocks(trimmed);
+      _resultsFuture = trimmed.isEmpty ? null : _searchWithMarket(trimmed);
     });
+  }
+
+  Future<List<Stock>> _searchWithMarket(String query) async {
+    final stocks = await _repository.searchStocks(query);
+
+    return Future.wait(
+      stocks.map((stock) async {
+        final meta = await _repository.getStockMetadata(stock.symbol);
+        return Stock(
+          symbol: stock.symbol,
+          name: stock.name,
+          market: meta.market,
+          currentPrice: stock.currentPrice,
+          previousClose: stock.previousClose,
+          openPrice: stock.openPrice,
+          highPrice: stock.highPrice,
+          lowPrice: stock.lowPrice,
+          tradingVolume: stock.tradingVolume,
+          listedStockCount: stock.listedStockCount,
+        );
+      }),
+    );
   }
 
   void _onClear() {
