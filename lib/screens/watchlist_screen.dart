@@ -2,6 +2,7 @@ import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart'
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
+import 'package:edencrew_assignment_starter/screens/stock_detail_screen.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_empty.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_header.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_row.dart';
@@ -158,8 +159,16 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                     itemCount: items.length,
                     separatorBuilder: (_, __) =>
                         Divider(height: 1, color: colors.borderSubtle),
-                    itemBuilder: (context, index) =>
-                        WatchlistRow(item: items[index]),
+                    itemBuilder: (context, index) => WatchlistRow(
+                      item: items[index],
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => StockDetailScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),

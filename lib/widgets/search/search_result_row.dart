@@ -1,3 +1,4 @@
+import 'package:edencrew_assignment_starter/screens/stock_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:edencrew_assignment_starter/models/stock.dart';
@@ -59,7 +60,11 @@ class SearchResultRow extends StatelessWidget {
     final dimens = context.dimens;
 
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => StockDetailScreen()));
+      },
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: dimens.rowMinHeight),
         child: Padding(
