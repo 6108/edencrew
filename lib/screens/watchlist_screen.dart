@@ -164,7 +164,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => StockDetailScreen(),
+                            builder: (_) =>
+                                StockDetailScreen(symbol: items[index].symbol),
                           ),
                         );
                       },

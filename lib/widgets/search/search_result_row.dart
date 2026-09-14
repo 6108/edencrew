@@ -61,9 +61,11 @@ class SearchResultRow extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => StockDetailScreen()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => StockDetailScreen(symbol: stock.symbol),
+          ),
+        );
       },
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: dimens.rowMinHeight),
