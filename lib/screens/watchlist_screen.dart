@@ -157,7 +157,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
                   return ListView.separated(
                     itemCount: items.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (_, _) =>
                         Divider(height: 1, color: colors.borderSubtle),
                     itemBuilder: (context, index) => WatchlistRow(
                       item: items[index],
