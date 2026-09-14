@@ -37,6 +37,7 @@ dependencies:
   http: ^1.6.0
   html: ^0.15.7
   charset: ^2.0.1
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
