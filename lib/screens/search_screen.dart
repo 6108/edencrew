@@ -4,6 +4,7 @@ import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart'
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import '../theme/theme.dart';
+import '../widgets/app_toast.dart';
 import '../widgets/search_empty.dart';
 import '../widgets/search_field.dart';
 import '../widgets/search_no_results.dart';
@@ -58,14 +59,15 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _onFavoriteTap(Stock stock) {
+    final willBeFavorite = !_favoriteSymbols.contains(stock.symbol);
     setState(() {
-      if (_favoriteSymbols.contains(stock.symbol)) {
-        _favoriteSymbols.remove(stock.symbol);
-      } else {
+      if (willBeFavorite) {
         _favoriteSymbols.add(stock.symbol);
+      } else {
+        _favoriteSymbols.remove(stock.symbol);
       }
     });
-    // TODO: 등록/해제 토스트 노출 (`04`/`05` 프레임 반영).
+    AppToast.show(context, isFavorite: willBeFavorite);
   }
 
   @override
