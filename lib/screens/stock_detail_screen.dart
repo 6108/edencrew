@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 
 import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
+import 'package:edencrew_assignment_starter/models/chart_period.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import '../providers/watchlist_provider.dart';
 import '../theme/theme.dart';
 import '../widgets/detail/detail_header.dart';
+import '../widgets/detail/period_tab_bar.dart';
 import '../widgets/detail/price_summary.dart';
 
 /// 종목상세 화면. (`03 · 종목상세`)
@@ -28,6 +30,8 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
   final _repository = StockRepository(MockNaverApi());
 
   late final Future<Stock> _future = _loadStock();
+
+  ChartPeriod _period = ChartPeriod.oneMonth;
 
   Future<Stock> _loadStock() async {
     // 관심/검색 화면과 같은 패턴: 메타데이터(이름·시장)와 시세를 각각 조회해서 하나로 합칩니다.
@@ -96,6 +100,11 @@ class _StockDetailScreenState extends State<StockDetailScreen> {
                   changeAmount: stock.changeAmount,
                   changeRatePercent: stock.changeRate * 100,
                 ),
+                PeriodTabBar(
+                  selected: _period,
+                  onSelected: (period) => setState(() => _period = period),
+                ),
+                // TODO: CandleChart, StatGrid, DailyQuoteTable
               ],
             );
           },
