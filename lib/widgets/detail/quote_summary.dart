@@ -13,35 +13,29 @@ class QuoteSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final dimens = context.dimens;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: dimens.space4,
-        vertical: dimens.space2,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final row in rows)
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: row == rows.last ? 0 : dimens.space2,
-              ),
-              child: Row(
-                children: [
-                  for (final entry in row) ...[
-                    Expanded(
-                      child: QuoteSummaryCell(
-                        label: entry.key,
-                        value: entry.value,
-                      ),
-                    ),
-                    if (entry != row.last) SizedBox(width: dimens.space2),
-                  ],
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final row in rows)
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: row == rows.last ? 0 : dimens.space2,
             ),
-        ],
-      ),
+            child: Row(
+              children: [
+                for (final entry in row) ...[
+                  Expanded(
+                    child: QuoteSummaryCell(
+                      label: entry.key,
+                      value: entry.value,
+                    ),
+                  ),
+                  if (entry != row.last) SizedBox(width: dimens.space2),
+                ],
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

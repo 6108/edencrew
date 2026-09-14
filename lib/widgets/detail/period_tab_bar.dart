@@ -47,24 +47,20 @@ class PeriodTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final dimens = context.dimens;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: dimens.space4,
-        vertical: dimens.space2,
-      ),
-      child: Row(
-        children: [
-          for (final period in ChartPeriod.values)
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: period == ChartPeriod.values.last ? 0 : dimens.space2,
-                ),
-                child: _chip(context, period),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        for (final period in ChartPeriod.values)
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: period == ChartPeriod.values.last ? 0 : dimens.space2,
               ),
+              child: _chip(context, period),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
