@@ -43,7 +43,7 @@ class NaverApi implements StockDataSource {
       throw Exception('실시간 시세 API 요청 실패: ${response.statusCode}');
     }
 
-    final json = jsonDecode(utf8.decode(response.bodyBytes));
+    final json = jsonDecode(eucKr.decode(response.bodyBytes));
 
     return RealtimeStockResponseDto.fromJson(json as Map<String, dynamic>);
   }
