@@ -14,3 +14,15 @@ String formatThousands(int value) {
 
   return isNegative ? '-${buffer.toString()}' : buffer.toString();
 }
+
+/// 거래량 축약 표기. 천 단위로 나눠 반올림하고 `천`을 붙입니다.
+/// 예: `29113456` → `29,113천`
+String formatVolumeAbbreviated(int volume) {
+  return '${formatThousands((volume / 1000).round())}천';
+}
+
+/// 시가총액 축약 표기. 조(10^12) 단위로 나눠 반올림하고 `조`를 붙입니다.
+/// 예: `1063200000000000` → `1,063,200조`
+String formatMarketCapAbbreviated(int marketCap) {
+  return '${formatThousands((marketCap / 1000000000000).round())}조';
+}
