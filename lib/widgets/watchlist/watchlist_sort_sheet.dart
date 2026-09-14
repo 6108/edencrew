@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 import 'watchlist_sort_option_row.dart';
 
 /// 관심 화면 정렬 바텀시트입니다. (`01 · 관심_sort`)

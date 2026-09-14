@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 class SearchField extends StatelessWidget {
   const SearchField({

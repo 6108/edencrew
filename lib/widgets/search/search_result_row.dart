@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:edencrew_assignment_starter/models/stock.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 /// 검색 결과 행 하나입니다. (`02 · 검색`)
 ///

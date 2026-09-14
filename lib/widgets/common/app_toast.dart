@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 /// 관심 등록/해제 토스트입니다. (`04 · 관심 등록 토스트` / `05 · 관심 해제 토스트`)
 ///

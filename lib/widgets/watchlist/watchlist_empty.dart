@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
-/// 검색어를 입력하기 전 빈 화면
-class SearchEmpty extends StatelessWidget {
-  const SearchEmpty({super.key});
+/// 관심종목이 없을 때의 빈 상태입니다.
+class WatchlistEmpty extends StatelessWidget {
+  const WatchlistEmpty({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +16,17 @@ class SearchEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.search, size: 40, color: colors.textTertiary),
+            Icon(Icons.star_border, size: 40, color: colors.textTertiary),
             SizedBox(height: dimens.space4),
             Text(
-              '종목을 검색해 보세요',
+              '관심 종목이 없습니다',
               style: context.textStyles.title.copyWith(
                 color: colors.textSecondary,
               ),
             ),
             SizedBox(height: dimens.space2),
             Text(
-              '종목명 또는 종목코드 6자리로\n검색하실 수 있습니다.',
+              '검색 탭에서 종목을 찾아\n별 아이콘을 눌러 추가해 주세요.',
               textAlign: TextAlign.center,
               style: context.textStyles.caption.copyWith(
                 color: colors.textTertiary,

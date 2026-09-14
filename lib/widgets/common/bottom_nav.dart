@@ -1,6 +1,6 @@
-import 'package:edencrew_assignment_starter/widgets/bottom_nav_item.dart';
+import 'package:edencrew_assignment_starter/widgets/common/bottom_nav_item.dart';
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key, required this.currentIndex, required this.onTap});

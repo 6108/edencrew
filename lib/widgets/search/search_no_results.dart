@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
-/// 관심종목이 없을 때의 빈 상태입니다.
-class WatchlistEmpty extends StatelessWidget {
-  const WatchlistEmpty({super.key});
+/// 검색 결과가 없을 때의 빈 상태입니다. (`02 · 검색결과_empty`)
+///
+/// 안내 문구에 사용자가 입력한 검색어가 그대로 들어갑니다.
+class SearchNoResults extends StatelessWidget {
+  const SearchNoResults({super.key, required this.query});
+
+  final String query;
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +20,17 @@ class WatchlistEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.star_border, size: 40, color: colors.textTertiary),
+            Icon(Icons.search_off, size: 40, color: colors.textTertiary),
             SizedBox(height: dimens.space4),
             Text(
-              '관심 종목이 없습니다',
+              '검색 결과가 없습니다',
               style: context.textStyles.title.copyWith(
                 color: colors.textSecondary,
               ),
             ),
             SizedBox(height: dimens.space2),
             Text(
-              '검색 탭에서 종목을 찾아\n별 아이콘을 눌러 추가해 주세요.',
+              "'$query'와 일치하는 검색 결과를 찾지 못했습니다.",
               textAlign: TextAlign.center,
               style: context.textStyles.caption.copyWith(
                 color: colors.textTertiary,

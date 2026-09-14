@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 class WatchlistSortOptionRow extends StatelessWidget {
   const WatchlistSortOptionRow({

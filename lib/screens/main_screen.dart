@@ -1,6 +1,6 @@
 import 'package:edencrew_assignment_starter/screens/search_screen.dart';
 import 'package:edencrew_assignment_starter/screens/watchlist_screen.dart';
-import 'package:edencrew_assignment_starter/widgets/bottom_nav.dart';
+import 'package:edencrew_assignment_starter/widgets/common/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {

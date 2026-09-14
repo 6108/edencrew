@@ -6,11 +6,11 @@ import 'package:edencrew_assignment_starter/data/repository/stock_repository.dar
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import '../providers/watchlist_provider.dart';
 import '../theme/theme.dart';
-import '../widgets/app_toast.dart';
-import '../widgets/search_empty.dart';
-import '../widgets/search_field.dart';
-import '../widgets/search_no_results.dart';
-import '../widgets/search_result_row.dart';
+import '../widgets/common/app_toast.dart';
+import '../widgets/search/search_empty.dart';
+import '../widgets/search/search_field.dart';
+import '../widgets/search/search_no_results.dart';
+import '../widgets/search/search_result_row.dart';
 
 /// 검색 화면. (`02 · 검색` / `02 · 검색_empty` / `02 · 검색결과_empty`)
 class SearchScreen extends StatefulWidget {

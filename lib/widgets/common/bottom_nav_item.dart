@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 class BottomNavItem extends StatelessWidget {
   const BottomNavItem({

@@ -2,10 +2,10 @@ import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart'
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
-import 'package:edencrew_assignment_starter/widgets/watchlist_empty.dart';
-import 'package:edencrew_assignment_starter/widgets/watchlist_header.dart';
-import 'package:edencrew_assignment_starter/widgets/watchlist_row.dart';
-import 'package:edencrew_assignment_starter/widgets/watchlist_sort_sheet.dart';
+import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_empty.dart';
+import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_header.dart';
+import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_row.dart';
+import 'package:edencrew_assignment_starter/widgets/watchlist/watchlist_sort_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
