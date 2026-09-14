@@ -1,8 +1,10 @@
+import 'package:edencrew_assignment_starter/data/datasource/naver_api.dart';
+import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
+import 'package:edencrew_assignment_starter/providers/watchlist_provider.dart';
 import 'package:edencrew_assignment_starter/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/watchlist_provider.dart';
 import 'theme/theme.dart';
 
 void main() {
@@ -14,8 +16,14 @@ class EdencrewAssignmentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => WatchlistProvider(),
+    // 여기 한 곳만 바꾸면 앱 전체가 목데이터/실제 API 중 하나로 통일됩니다.
+    final repository = StockRepository(NaverApi());
+
+    return MultiProvider(
+      providers: [
+        Provider<StockRepository>.value(value: repository),
+        ChangeNotifierProvider(create: (_) => WatchlistProvider()),
+      ],
       child: MaterialApp(
         title: '이든크루 평가 과제',
         theme: AppTheme.dark,

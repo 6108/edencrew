@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/daily_price_cache.dart';
-import '../data/datasource/mock_naver_api.dart';
+// import '../data/datasource/mock_naver_api.dart';
 import '../data/repository/stock_repository.dart';
 import '../models/chart_period.dart';
 import '../models/daily_price.dart';
@@ -33,7 +33,8 @@ class StockDetailScreen extends StatefulWidget {
 }
 
 class _StockDetailScreenState extends State<StockDetailScreen> {
-  final _repository = StockRepository(MockNaverApi());
+  // final _repository = StockRepository(MockNaverApi());
+  late final _repository = context.read<StockRepository>();
   late final _priceCache = DailyPriceCache(_repository, widget.symbol);
 
   late final Future<Stock> _stockFuture = _loadStock();

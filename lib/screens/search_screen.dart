@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
+// import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import '../providers/watchlist_provider.dart';
@@ -22,7 +22,8 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   // 실제 실행 시엔 NaverApi()로 교체. 개발 중엔 assets/mock/*.json 사용.
-  final _repository = StockRepository(MockNaverApi());
+  //final _repository = StockRepository(MockNaverApi());
+  late final _repository = context.read<StockRepository>();
 
   final _controller = TextEditingController();
   String _query = '';

@@ -1,4 +1,4 @@
-import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
+// import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
 import 'package:edencrew_assignment_starter/models/watchlist_item.dart';
@@ -22,8 +22,8 @@ class WatchlistScreen extends StatefulWidget {
 }
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
-  // 실제 실행 시엔 NaverApi()로 교체. 개발 중엔 assets/mock/*.json 사용.
-  final _repository = StockRepository(MockNaverApi());
+  // final _repository = StockRepository(MockNaverApi());
+  late final _repository = context.read<StockRepository>();
 
   Future<List<WatchlistItem>>? _future;
   // null이면 "아직 한 번도 로드 안 함"을 뜻합니다. 빈 리스트([])와 구분하기
