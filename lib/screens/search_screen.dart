@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:edencrew_assignment_starter/data/datasource/mock_naver_api.dart';
 import 'package:edencrew_assignment_starter/data/repository/stock_repository.dart';
 import 'package:edencrew_assignment_starter/models/stock.dart';
+import '../providers/watchlist_provider.dart';
 import '../theme/theme.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/search_empty.dart';
@@ -11,10 +13,6 @@ import '../widgets/search_no_results.dart';
 import '../widgets/search_result_row.dart';
 
 /// 검색 화면. (`02 · 검색` / `02 · 검색_empty` / `02 · 검색결과_empty`)
-///
-/// 결과 없음 상태(`SearchNoResults`)와 관심 등록/해제 토스트, 관심 화면과의
-/// 상태 동기화는 다음 단계에서 붙입니다. 지금 관심 등록 여부는 이 화면
-/// 로컬 `Set`으로만 관리해서, 관심 화면에는 아직 반영되지 않습니다.
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -29,10 +27,6 @@ class _SearchScreenState extends State<SearchScreen> {
   final _controller = TextEditingController();
   String _query = '';
   Future<List<Stock>>? _resultsFuture;
-
-  // TODO: WatchlistProvider(또는 동등한 전역 상태)로 교체해 관심/검색/상세
-  // 화면 간 등록 여부를 동기화해야 합니다. 지금은 이 화면만의 임시 상태입니다.
-  final _favoriteSymbols = <String>{};
 
   @override
   void dispose() {
@@ -59,20 +53,16 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _onFavoriteTap(Stock stock) {
-    final willBeFavorite = !_favoriteSymbols.contains(stock.symbol);
-    setState(() {
-      if (willBeFavorite) {
-        _favoriteSymbols.add(stock.symbol);
-      } else {
-        _favoriteSymbols.remove(stock.symbol);
-      }
-    });
+    final provider = context.read<WatchlistProvider>();
+    final willBeFavorite = provider.toggle(stock.symbol);
     AppToast.show(context, isFavorite: willBeFavorite);
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    // 관심 등록 여부가 바뀔 때 별 아이콘이 다시 그려지도록 구독.
+    final watchlistProvider = context.watch<WatchlistProvider>();
 
     return Scaffold(
       backgroundColor: colors.surfaceBase,
@@ -84,14 +74,14 @@ class _SearchScreenState extends State<SearchScreen> {
               onChanged: _onChanged,
               onClear: _onClear,
             ),
-            Expanded(child: _buildBody()),
+            Expanded(child: _buildBody(watchlistProvider)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(WatchlistProvider watchlistProvider) {
     if (_query.isEmpty) return const SearchEmpty();
 
     return FutureBuilder<List<Stock>>(
@@ -125,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
             return SearchResultRow(
               stock: stock,
               query: _query,
-              isFavorite: _favoriteSymbols.contains(stock.symbol),
+              isFavorite: watchlistProvider.isFavorite(stock.symbol),
               onTap: () {
                 // TODO: 종목 상세 화면 이동 (StockDetailScreen으로 Navigator.push)
               },

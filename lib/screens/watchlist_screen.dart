@@ -6,16 +6,12 @@ import 'package:edencrew_assignment_starter/widgets/watchlist_empty.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_header.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_row.dart';
 import 'package:edencrew_assignment_starter/widgets/watchlist_sort_sheet.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../theme/theme.dart';
+import 'package:provider/provider.dart';
 
-const List<String> _watchedSymbols = [
-  '005930', // 삼성전자
-  '000660', // SK하이닉스
-  '005380', // 현대차
-  '035420', // NAVER
-  '035720', // 카카오
-];
+import '../providers/watchlist_provider.dart';
+import '../theme/theme.dart';
 
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
@@ -28,7 +24,11 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   // 실제 실행 시엔 NaverApi()로 교체. 개발 중엔 assets/mock/*.json 사용.
   final _repository = StockRepository(MockNaverApi());
 
-  late Future<List<WatchlistItem>> _future;
+  Future<List<WatchlistItem>>? _future;
+  // null이면 "아직 한 번도 로드 안 함"을 뜻합니다. 빈 리스트([])와 구분하기
+  // 위해 nullable로 둡니다 — 안 그러면 관심종목이 원래 0개일 때
+  // listEquals([], [])가 true가 돼서 최초 로드가 아예 트리거되지 않습니다.
+  List<String>? _loadedSymbols;
 
   WatchlistSortOption _sortOption = WatchlistSortOption.nameAsc;
 
@@ -43,25 +43,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   }
 
   void _onRefreshTap() {
-    // TODO: 시세 재조회 로직 연결 (NAVER_API.md 실시간 시세 endpoint 참고).
+    setState(() {
+      _future = _loadWatchlist(_loadedSymbols ?? const []);
+    });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _future = _loadWatchlist();
-  }
-
-  Future<List<WatchlistItem>> _loadWatchlist() async {
-    if (_watchedSymbols.isEmpty) return [];
+  Future<List<WatchlistItem>> _loadWatchlist(List<String> symbols) async {
+    if (symbols.isEmpty) return [];
 
     // 메타데이터(이름·시장)는 종목마다 따로, 시세는 한 번에 요청.
     final metadataList = await Future.wait(
-      _watchedSymbols.map(_repository.getStockMetadata),
+      symbols.map(_repository.getStockMetadata),
     );
-    final realtimeBySymbol = await _repository.getRealtimeStocks(
-      _watchedSymbols,
-    );
+    final realtimeBySymbol = await _repository.getRealtimeStocks(symbols);
 
     return metadataList.map((meta) {
       final realtime = realtimeBySymbol[meta.symbol];
@@ -93,7 +87,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     return PriceDirection.flat;
   }
 
-  // 시세를 아직 못 받은 행(스켈레톤)은 정렬 기준과 무관하게 항상 맨 뒤에 두도록 처리합니다.
+  // 시세를 아직 못 받은 행(스켈레톤)은 정렬 기준과 무관하게 항상 맨 뒤에
   List<WatchlistItem> _sorted(List<WatchlistItem> items) {
     final sorted = List.of(items);
     sorted.sort((a, b) {
@@ -117,6 +111,13 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    // 검색/상세 화면에서 등록·해제하면 여기도 자동으로 다시 그려집니다.
+    final symbols = context.watch<WatchlistProvider>().symbols;
+
+    if (_loadedSymbols == null || !listEquals(_loadedSymbols, symbols)) {
+      _loadedSymbols = List.of(symbols);
+      _future = _loadWatchlist(_loadedSymbols!);
+    }
 
     return Scaffold(
       backgroundColor: colors.surfaceBase,

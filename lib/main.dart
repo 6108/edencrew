@@ -1,6 +1,8 @@
 import 'package:edencrew_assignment_starter/screens/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'providers/watchlist_provider.dart';
 import 'theme/theme.dart';
 
 void main() {
@@ -12,10 +14,13 @@ class EdencrewAssignmentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '이든크루 평가 과제',
-      theme: AppTheme.dark,
-      home: const MainScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => WatchlistProvider(),
+      child: MaterialApp(
+        title: '이든크루 평가 과제',
+        theme: AppTheme.dark,
+        home: const MainScreen(),
+      ),
     );
   }
 }
